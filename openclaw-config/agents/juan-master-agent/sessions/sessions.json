@@ -26,7 +26,7 @@
     "sessionId": "e7c6617d-ee62-452b-bfdc-89977f5a5d65",
     "systemSent": true,
     "abortedLastRun": false,
-    "sessionFile": "/Users/josearango/.openclaw/agents/juan-master-agent/sessions/e7c6617d-ee62-452b-bfdc-89977f5a5d65.jsonl",
+    "sessionFile": "/root/.openclaw/agents/juan-master-agent/sessions/e7c6617d-ee62-452b-bfdc-89977f5a5d65.jsonl",
     "skillsSnapshot": {
       "prompt": "\n\nThe following skills provide specialized instructions for specific tasks.\nUse the read tool to load a skill's file when the task matches its description.\nWhen a skill file references a relative path, resolve it against the skill directory (parent of SKILL.md / dirname of the path) and use that absolute path in tool commands.\n\n<available_skills>\n  <skill>\n    <name>coding-agent</name>\n    <description>Delegate coding tasks to Codex, Claude Code, or Pi agents via background process. Use when: (1) building/creating new features or apps, (2) reviewing PRs (spawn in temp dir), (3) refactoring large codebases, (4) iterative coding that needs file exploration. NOT for: simple one-liner fixes (just edit), reading code (use read tool), thread-bound ACP harness requests in chat (for example spawn/run Codex or Claude Code in a Discord thread; use sessions_spawn with runtime:&quot;acp&quot;), or any work in ~/clawd workspace (never spawn agents here). Claude Code: use --print --permission-mode bypassPermissions (no PTY). Codex/Pi/OpenCode: pty:true required.</description>\n    <location>~/.nvm/versions/node/v22.22.1/lib/node_modules/openclaw/skills/coding-agent/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>healthcheck</name>\n    <description>Host security hardening and risk-tolerance configuration for OpenClaw deployments. Use when a user asks for security audits, firewall/SSH/update hardening, risk posture, exposure review, OpenClaw cron scheduling for periodic checks, or version status checks on a machine running OpenClaw (laptop, workstation, Pi, VPS).</description>\n    <location>~/.nvm/versions/node/v22.22.1/lib/node_modules/openclaw/skills/healthcheck/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>node-connect</name>\n    <description>Diagnose OpenClaw node connection and pairing failures for Android, iOS, and macOS companion apps. Use when QR/setup code/manual connect fails, local Wi-Fi works but VPS/tailnet does not, or errors mention pairing required, unauthorized, bootstrap token invalid or expired, gateway.bind, gateway.remote.url, Tailscale, or plugins.entries.device-pair.config.publicUrl.</description>\n    <location>~/.nvm/versions/node/v22.22.1/lib/node_modules/openclaw/skills/node-connect/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>skill-creator</name>\n    <description>Create, edit, improve, or audit AgentSkills. Use when creating a new skill from scratch or when asked to improve, review, audit, tidy up, or clean up an existing skill or SKILL.md file. Also use when editing or restructuring a skill directory (moving files to references/ or scripts/, removing stale content, validating against the AgentSkills spec). Triggers on phrases like &quot;create a skill&quot;, &quot;author a skill&quot;, &quot;tidy up a skill&quot;, &quot;improve this skill&quot;, &quot;review the skill&quot;, &quot;clean up the skill&quot;, &quot;audit the skill&quot;.</description>\n    <location>~/.nvm/versions/node/v22.22.1/lib/node_modules/openclaw/skills/skill-creator/SKILL.md</location>\n  </skill>\n  <skill>\n    <name>weather</name>\n    <description>Get current weather and forecasts via wttr.in or Open-Meteo. Use when: user asks about weather, temperature, or forecasts for any location. NOT for: historical weather data, severe weather alerts, or detailed meteorological analysis. No API key needed.</description>\n    <location>~/.nvm/versions/node/v22.22.1/lib/node_modules/openclaw/skills/weather/SKILL.md</location>\n  </skill>\n</available_skills>",
       "skills": [
@@ -105,7 +105,7 @@
       "sessionKey": "agent:juan-master-agent:whatsapp:group:120363427648055416@g.us",
       "provider": "anthropic",
       "model": "claude-opus-4-6",
-      "workspaceDir": "/Users/josearango/.openclaw/juan_workspace",
+      "workspaceDir": "/root/.openclaw/juan_workspace",
       "bootstrapMaxChars": 20000,
       "bootstrapTotalMaxChars": 150000,
       "bootstrapTruncation": {
@@ -127,7 +127,7 @@
       "injectedWorkspaceFiles": [
         {
           "name": "AGENTS.md",
-          "path": "/Users/josearango/.openclaw/juan_workspace/AGENTS.md",
+          "path": "/root/.openclaw/juan_workspace/AGENTS.md",
           "missing": false,
           "rawChars": 7809,
           "injectedChars": 7809,
@@ -135,7 +135,7 @@
         },
         {
           "name": "SOUL.md",
-          "path": "/Users/josearango/.openclaw/juan_workspace/SOUL.md",
+          "path": "/root/.openclaw/juan_workspace/SOUL.md",
           "missing": false,
           "rawChars": 1915,
           "injectedChars": 1915,
@@ -143,7 +143,7 @@
         },
         {
           "name": "TOOLS.md",
-          "path": "/Users/josearango/.openclaw/juan_workspace/TOOLS.md",
+          "path": "/root/.openclaw/juan_workspace/TOOLS.md",
           "missing": false,
           "rawChars": 850,
           "injectedChars": 850,
@@ -151,7 +151,7 @@
         },
         {
           "name": "IDENTITY.md",
-          "path": "/Users/josearango/.openclaw/juan_workspace/IDENTITY.md",
+          "path": "/root/.openclaw/juan_workspace/IDENTITY.md",
           "missing": false,
           "rawChars": 575,
           "injectedChars": 575,
@@ -159,7 +159,7 @@
         },
         {
           "name": "USER.md",
-          "path": "/Users/josearango/.openclaw/juan_workspace/USER.md",
+          "path": "/root/.openclaw/juan_workspace/USER.md",
           "missing": false,
           "rawChars": 661,
           "injectedChars": 661,
@@ -167,7 +167,7 @@
         },
         {
           "name": "HEARTBEAT.md",
-          "path": "/Users/josearango/.openclaw/juan_workspace/HEARTBEAT.md",
+          "path": "/root/.openclaw/juan_workspace/HEARTBEAT.md",
           "missing": false,
           "rawChars": 167,
           "injectedChars": 167,
@@ -175,7 +175,7 @@
         },
         {
           "name": "BOOTSTRAP.md",
-          "path": "/Users/josearango/.openclaw/juan_workspace/BOOTSTRAP.md",
+          "path": "/root/.openclaw/juan_workspace/BOOTSTRAP.md",
           "missing": false,
           "rawChars": 1726,
           "injectedChars": 1726,

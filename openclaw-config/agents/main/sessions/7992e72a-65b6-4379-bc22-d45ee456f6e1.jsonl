@@ -1,4 +1,4 @@
-{"type":"session","version":3,"id":"7992e72a-65b6-4379-bc22-d45ee456f6e1","timestamp":"2026-03-15T19:34:17.431Z","cwd":"/Users/josearango/.openclaw/workspace"}
+{"type":"session","version":3,"id":"7992e72a-65b6-4379-bc22-d45ee456f6e1","timestamp":"2026-03-15T19:34:17.431Z","cwd":"/root/.openclaw/workspace"}
 {"type":"model_change","id":"caa15ccc","parentId":null,"timestamp":"2026-03-15T19:34:17.432Z","provider":"openai","modelId":"gpt-5.1-codex"}
 {"type":"thinking_level_change","id":"cebe42c2","parentId":"caa15ccc","timestamp":"2026-03-15T19:34:17.432Z","thinkingLevel":"low"}
 {"type":"custom","customType":"model-snapshot","data":{"timestamp":1773603257432,"provider":"openai","modelApi":"openai-responses","modelId":"gpt-5.1-codex"},"id":"9f97c389","parentId":"cebe42c2","timestamp":"2026-03-15T19:34:17.432Z"}

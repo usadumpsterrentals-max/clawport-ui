@@ -1,7 +1,7 @@
 {
   "version": 1,
   "socket": {
-    "path": "/Users/josearango/.openclaw/exec-approvals.sock",
+    "path": "/root/.openclaw/exec-approvals.sock",
     "token": "YsNji10HVrk_EwYfErkusmC8nD_6Txay"
   },
   "defaults": {},
