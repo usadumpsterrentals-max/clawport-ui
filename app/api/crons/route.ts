@@ -1,6 +1,5 @@
 import { getCrons } from '@/lib/crons'
 import { loadPipelines } from '@/lib/cron-pipelines.server'
-import { apiErrorResponse } from '@/lib/api-error'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
@@ -8,7 +7,9 @@ export async function GET() {
     const crons = await getCrons()
     const pipelines = loadPipelines()
     return NextResponse.json({ crons, pipelines })
-  } catch (err) {
-    return apiErrorResponse(err, 'Failed to load cron jobs')
+  } catch {
+    // OpenClaw CLI not ready yet (e.g. fresh container, gateway starting).
+    // Return empty data so the UI loads gracefully rather than showing 500.
+    return NextResponse.json({ crons: [], pipelines: [] })
   }
 }
