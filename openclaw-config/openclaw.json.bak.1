@@ -1,0 +1,379 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.3.13",
+    "lastTouchedAt": "2026-03-18T16:04:23.629Z"
+  },
+  "wizard": {
+    "lastRunAt": "2026-03-15T18:56:19.280Z",
+    "lastRunVersion": "2026.3.13",
+    "lastRunCommand": "onboard",
+    "lastRunMode": "local"
+  },
+  "auth": {
+    "profiles": {
+      "xai:default": {
+        "provider": "xai",
+        "mode": "api_key"
+      },
+      "openai:default": {
+        "provider": "openai",
+        "mode": "api_key"
+      },
+      "anthropic:default": {
+        "provider": "anthropic",
+        "mode": "token"
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "xai": {
+        "baseUrl": "https://api.x.ai/v1",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "grok-4",
+            "name": "Grok 4",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 131072,
+            "maxTokens": 8192
+          }
+        ]
+      },
+      "anthropic": {
+        "baseUrl": "https://api.anthropic.com/v1",
+        "api": "anthropic-messages",
+        "models": [
+          {
+            "id": "claude-opus-4-6",
+            "name": "Claude 4.6 Opus"
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "anthropic/claude-opus-4-6",
+        "fallbacks": [
+          "openai/gpt-5.1-codex",
+          "xai/grok-4"
+        ]
+      },
+      "models": {
+        "xai/grok-4": {
+          "alias": "Grok"
+        },
+        "openai/gpt-5.1-codex": {
+          "alias": "GPT"
+        },
+        "anthropic/claude-4.6-opus": {}
+      },
+      "workspace": "/Users/josearango/.openclaw/workspace",
+      "contextPruning": {
+        "mode": "cache-ttl",
+        "ttl": "1h"
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "heartbeat": {
+        "every": "1h"
+      }
+    },
+    "list": [
+      {
+        "id": "main",
+        "name": "Master Agent",
+        "workspace": "/Users/josearango/.openclaw/master_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/master/agent",
+        "groupChat": {
+          "mentionPatterns": []
+        },
+        "tools": {
+          "profile": "coding"
+        }
+      },
+      {
+        "id": "seo-agent",
+        "name": "seo-agent",
+        "workspace": "/Users/josearango/.openclaw/seo_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/seo-agent/agent"
+      },
+      {
+        "id": "realestate-agent",
+        "name": "realestate-agent",
+        "workspace": "/Users/josearango/.openclaw/realestate_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/realestate-agent/agent"
+      },
+      {
+        "id": "landuse-attorney",
+        "name": "landuse-attorney",
+        "workspace": "/Users/josearango/.openclaw/landuse_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/landuse-attorney/agent"
+      },
+      {
+        "id": "environmental-engineer",
+        "name": "environmental-engineer",
+        "workspace": "/Users/josearango/.openclaw/environmental_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/environmental-engineer/agent"
+      },
+      {
+        "id": "mckinsey-consultant",
+        "name": "mckinsey-consultant",
+        "workspace": "/Users/josearango/.openclaw/mckinsey_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/mckinsey-consultant/agent"
+      },
+      {
+        "id": "investment-banker",
+        "name": "investment-banker",
+        "workspace": "/Users/josearango/.openclaw/investmentbanker_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/investment-banker/agent"
+      },
+      {
+        "id": "insurance-attorney",
+        "name": "insurance-attorney",
+        "workspace": "/Users/josearango/.openclaw/insurance_attorney_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/insurance-attorney/agent"
+      },
+      {
+        "id": "route-optimizer-dev",
+        "name": "route-optimizer-dev",
+        "workspace": "/Users/josearango/.openclaw/route_optimizer_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/route-optimizer-dev/agent"
+      },
+      {
+        "id": "software-dev",
+        "name": "software-dev",
+        "workspace": "/Users/josearango/.openclaw/software_dev_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/software-dev/agent"
+      },
+      {
+        "id": "graphic-designer",
+        "name": "graphic-designer",
+        "workspace": "/Users/josearango/.openclaw/graphic_designer_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/graphic-designer/agent"
+      },
+      {
+        "id": "video-editor",
+        "name": "video-editor",
+        "workspace": "/Users/josearango/.openclaw/video_editor_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/video-editor/agent"
+      },
+      {
+        "id": "fleet-manager",
+        "name": "fleet-manager",
+        "workspace": "/Users/josearango/.openclaw/fleet_manager_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/fleet-manager/agent"
+      },
+      {
+        "id": "cfo",
+        "name": "cfo",
+        "workspace": "/Users/josearango/.openclaw/cfo_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/cfo/agent"
+      },
+      {
+        "id": "cmo",
+        "name": "cmo",
+        "workspace": "/Users/josearango/.openclaw/cmo_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/cmo/agent"
+      },
+      {
+        "id": "architect",
+        "name": "architect",
+        "workspace": "/Users/josearango/.openclaw/architect_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/architect/agent"
+      },
+      {
+        "id": "coo",
+        "name": "coo",
+        "workspace": "/Users/josearango/.openclaw/coo_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/coo/agent"
+      },
+      {
+        "id": "cto",
+        "name": "cto",
+        "workspace": "/Users/josearango/.openclaw/cto_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/cto/agent"
+      },
+      {
+        "id": "general-counsel",
+        "name": "general-counsel",
+        "workspace": "/Users/josearango/.openclaw/general_counsel_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/general-counsel/agent"
+      },
+      {
+        "id": "chro",
+        "name": "chro",
+        "workspace": "/Users/josearango/.openclaw/chro_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/chro/agent"
+      },
+      {
+        "id": "cso",
+        "name": "cso",
+        "workspace": "/Users/josearango/.openclaw/cso_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/cso/agent"
+      },
+      {
+        "id": "paid-media",
+        "name": "paid-media",
+        "workspace": "/Users/josearango/.openclaw/paid_media_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/paid-media/agent"
+      },
+      {
+        "id": "sales-director",
+        "name": "sales-director",
+        "workspace": "/Users/josearango/.openclaw/sales_director_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/sales-director/agent"
+      },
+      {
+        "id": "accountant",
+        "name": "accountant",
+        "workspace": "/Users/josearango/.openclaw/accountant_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/accountant/agent"
+      },
+      {
+        "id": "civil-engineer",
+        "name": "civil-engineer",
+        "workspace": "/Users/josearango/.openclaw/civil_engineer_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/civil-engineer/agent"
+      },
+      {
+        "id": "project-manager",
+        "name": "project-manager",
+        "workspace": "/Users/josearango/.openclaw/project_manager_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/project-manager/agent"
+      },
+      {
+        "id": "ai-data-scientist",
+        "name": "ai-data-scientist",
+        "workspace": "/Users/josearango/.openclaw/ai_data_scientist_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/ai-data-scientist/agent"
+      },
+      {
+        "id": "procurement",
+        "name": "procurement",
+        "workspace": "/Users/josearango/.openclaw/procurement_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/procurement/agent"
+      },
+      {
+        "id": "construction-manager",
+        "name": "construction-manager",
+        "workspace": "/Users/josearango/.openclaw/construction_manager_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/construction-manager/agent"
+      },
+      {
+        "id": "social-media-manager",
+        "name": "social-media-manager",
+        "workspace": "/Users/josearango/.openclaw/social_media_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/social-media-manager/agent"
+      },
+      {
+        "id": "insurance-broker",
+        "name": "insurance-broker",
+        "workspace": "/Users/josearango/.openclaw/insurance_broker_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/insurance-broker/agent"
+      },
+      {
+        "id": "customer-service",
+        "name": "customer-service",
+        "workspace": "/Users/josearango/.openclaw/customer_service_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/customer-service/agent"
+      },
+      {
+        "id": "juan-master-agent",
+        "name": "Juan Master Agent",
+        "workspace": "/Users/josearango/.openclaw/juan_workspace",
+        "agentDir": "/Users/josearango/.openclaw/agents/juan-master-agent/agent"
+      }
+    ]
+  },
+  "tools": {
+    "profile": "coding"
+  },
+  "bindings": [
+    {
+      "type": "route",
+      "agentId": "juan-master-agent",
+      "match": {
+        "channel": "whatsapp",
+        "accountId": "120363427648055416@g.us"
+      }
+    }
+  ],
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "session": {
+    "dmScope": "per-channel-peer"
+  },
+  "channels": {
+    "whatsapp": {
+      "enabled": true,
+      "dmPolicy": "disabled",
+      "allowFrom": [
+        "*"
+      ],
+      "groupAllowFrom": [
+        "*"
+      ],
+      "groupPolicy": "allowlist",
+      "groups": {
+        "120363425630314527@g.us": {
+          "requireMention": false
+        },
+        "120363427648055416@g.us": {
+          "requireMention": false
+        }
+      },
+      "debounceMs": 0,
+      "mediaMaxMb": 50
+    }
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "loopback",
+    "auth": {
+      "mode": "token",
+      "token": "ca4052eeba6903b9dcf30a01db11d35bcce7ce0177ac59ba"
+    },
+    "tailscale": {
+      "mode": "off",
+      "resetOnExit": false
+    },
+    "http": {
+      "endpoints": {
+        "chatCompletions": {
+          "enabled": true
+        }
+      }
+    }
+  },
+  "skills": {
+    "install": {
+      "nodeManager": "npm"
+    }
+  },
+  "plugins": {
+    "entries": {
+      "whatsapp": {
+        "enabled": true
+      }
+    }
+  }
+}

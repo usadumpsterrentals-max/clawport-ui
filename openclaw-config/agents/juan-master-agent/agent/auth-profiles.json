@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "profiles": {
+    "xai:default": {
+      "type": "api_key",
+      "provider": "xai",
+      "key": "<PULLED_BY_SECURITY>"
+    },
+    "openai:default": {
+      "type": "api_key",
+      "provider": "openai",
+      "key": "<PULLED_BY_SECURITY>qW1trBW2_glC-0shfxHT3BlbkFJvRuSWWlPFHgjEIXQObVBVV2kzT4xpXGd0LSiLrsTkTIjakO7nUEVod8-rctAhT6qKE3dvTnN4A"
+    },
+    "anthropic:default": {
+      "type": "token",
+      "provider": "anthropic",
+      "token": "<PULLED_BY_SECURITY>Tz40UB9HKjjGhnDN0aqEDosUOyB3xKLfwtBA-wnlaLQAA"
+    }
+  },
+  "usageStats": {
+    "openai:default": {
+      "errorCount": 0,
+      "lastUsed": 1773603766585
+    },
+    "anthropic:default": {
+      "errorCount": 0,
+      "lastUsed": 1773851852607
+    }
+  }
+}
