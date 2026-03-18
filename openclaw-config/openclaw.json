@@ -305,6 +305,17 @@
   "bindings": [
     {
       "type": "route",
+      "agentId": "main",
+      "match": {
+        "channel": "whatsapp",
+        "peer": {
+          "kind": "group",
+          "id": "120363425630314527@g.us"
+        }
+      }
+    },
+    {
+      "type": "route",
       "agentId": "juan-master-agent",
       "match": {
         "channel": "whatsapp",
