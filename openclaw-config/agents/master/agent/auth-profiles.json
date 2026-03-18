@@ -9,12 +9,12 @@
     "openai:default": {
       "type": "api_key",
       "provider": "openai",
-      "key": "<PULLED_BY_SECURITY>qW1trBW2_glC-0shfxHT3BlbkFJvRuSWWlPFHgjEIXQObVBVV2kzT4xpXGd0LSiLrsTkTIjakO7nUEVod8-rctAhT6qKE3dvTnN4A"
+      "key": "<PULLED_BY_SECURITY>3BlbkFJvRuSWWlPFHgjEIXQObVBVV2kzT4xpXGd0LSiLrsTkTIjakO7nUEVod8-rctAhT6qKE3dvTnN4A"
     },
     "anthropic:default": {
       "type": "token",
       "provider": "anthropic",
-      "token": "<PULLED_BY_SECURITY>Tz40UB9HKjjGhnDN0aqEDosUOyB3xKLfwtBA-wnlaLQAA"
+      "token": "<PULLED_BY_SECURITY>DosUOyB3xKLfwtBA-wnlaLQAA"
     }
   },
   "usageStats": {
