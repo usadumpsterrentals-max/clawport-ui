@@ -345,6 +345,7 @@
       "groupAllowFrom": [
         "*"
       ],
+      "allowSelf": true,
       "groupPolicy": "allowlist",
       "groups": {
         "120363425630314527@g.us": {
