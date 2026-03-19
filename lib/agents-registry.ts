@@ -512,7 +512,36 @@ function mergeExtraWorkspaces(
     }
   }
 
-  return [...existing, ...added]
+  const merged = [...existing, ...added]
+
+  // ── Post-merge: detect an operations-manager agent and restructure ──
+  // If one of the extra agents looks like a deputy / ops manager (e.g.
+  // "Juan's Master Agent"), reparent all other extras under it so the
+  // org chart shows:  Root → Deputy → everyone else.
+  if (primaryRoot) {
+    const deputyCandidate = merged.find(a =>
+      a.id !== primaryRoot.id &&
+      a.reportsTo === primaryRoot.id &&
+      // Heuristic: CLI identity name contains "master" or workspace includes "juan"
+      (a.name.toLowerCase().includes('master') ||
+       a.name.toLowerCase().includes('deputy') ||
+       a.name.toLowerCase().includes('operations'))
+    )
+
+    if (deputyCandidate) {
+      // Move all root's direct reports (except the deputy) under the deputy
+      const agentsToMove = primaryRoot.directReports.filter(id => id !== deputyCandidate.id)
+      for (const id of agentsToMove) {
+        const agent = merged.find(a => a.id === id)
+        if (agent) agent.reportsTo = deputyCandidate.id
+      }
+      deputyCandidate.directReports.push(...agentsToMove)
+      // Root now only has the deputy as direct report
+      primaryRoot.directReports = [deputyCandidate.id]
+    }
+  }
+
+  return merged
 }
 
 /**
