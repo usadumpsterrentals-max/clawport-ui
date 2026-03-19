@@ -3,6 +3,8 @@ import { computeMemoryHealth } from '@/lib/memory-health'
 import { writeMemoryFile, PathValidationError } from '@/lib/memory-write'
 import { apiErrorResponse } from '@/lib/api-error'
 import { NextResponse } from 'next/server'
+export const dynamic = 'force-dynamic'
+
 
 export async function GET() {
   try {

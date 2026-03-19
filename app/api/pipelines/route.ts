@@ -2,6 +2,8 @@ import { NextResponse } from "next/server"
 import { existsSync, mkdirSync, writeFileSync } from "fs"
 import { join } from "path"
 import { loadPipelines } from "@/lib/cron-pipelines.server"
+export const dynamic = 'force-dynamic'
+
 
 export async function GET() {
   return NextResponse.json(loadPipelines())

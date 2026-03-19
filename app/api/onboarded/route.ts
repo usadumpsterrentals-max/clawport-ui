@@ -1,6 +1,8 @@
 import { NextRequest } from 'next/server'
 import { isOnboarded, setOnboarded } from '@/lib/conversation-store'
 import { apiErrorResponse } from '@/lib/api-error'
+export const dynamic = 'force-dynamic'
+
 
 export async function GET() {
   try {

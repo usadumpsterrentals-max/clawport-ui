@@ -1,5 +1,7 @@
 import { listAgentIds } from '@/lib/conversation-store'
 import { apiErrorResponse } from '@/lib/api-error'
+export const dynamic = 'force-dynamic'
+
 
 export async function GET() {
   try {
