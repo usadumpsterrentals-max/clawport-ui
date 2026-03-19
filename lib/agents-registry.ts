@@ -605,9 +605,17 @@ export function loadRegistry(): AgentEntry[] {
           return mergeExtraWorkspaces(discovered, cliAgents, workspacePath)
         }
       }
+      // If CLI failed but bundled registry has more agents, prefer bundled
+      const bundled = bundledRegistry as AgentEntry[]
+      if (bundled.length > discovered.length) return bundled
       return discovered
     }
-    if (discovered) return discovered
+    if (discovered) {
+      // If bundled registry has more agents (e.g. Docker without CLI), prefer bundled
+      const bundled = bundledRegistry as AgentEntry[]
+      if (bundled.length > discovered.length) return bundled
+      return discovered
+    }
 
     // 3. CLI-only: no primary workspace agents, scan each CLI agent's workspace
     if (openclawBin) {
