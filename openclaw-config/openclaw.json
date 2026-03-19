@@ -1,7 +1,7 @@
 {
   "meta": {
     "lastTouchedVersion": "2026.3.13",
-    "lastTouchedAt": "2026-03-18T16:14:37.182Z"
+    "lastTouchedAt": "2026-03-18T23:48:00.056Z"
   },
   "wizard": {
     "lastRunAt": "2026-03-15T18:56:19.280Z",
@@ -326,6 +326,14 @@
       }
     }
   ],
+  "audio": {
+    "transcription": {
+      "command": [
+        "openai",
+        "gpt-4o-mini-transcribe"
+      ]
+    }
+  },
   "commands": {
     "native": "auto",
     "nativeSkills": "auto",
@@ -345,7 +353,6 @@
       "groupAllowFrom": [
         "*"
       ],
-      "allowSelf": true,
       "groupPolicy": "allowlist",
       "groups": {
         "120363425630314527@g.us": {
