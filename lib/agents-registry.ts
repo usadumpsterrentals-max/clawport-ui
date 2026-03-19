@@ -456,6 +456,9 @@ function mergeExtraWorkspaces(
   const added: AgentEntry[] = []
   let colorIndex = existing.length
 
+  // Find the primary root so we can parent extra-workspace agents under it
+  const primaryRoot = existing.find(a => a.reportsTo === null) ?? null
+
   for (const cli of cliAgents) {
     const ws = cli.workspace
     // Skip agents whose workspace matches the primary (already discovered)
@@ -472,9 +475,12 @@ function mergeExtraWorkspaces(
       }
       for (const agent of discovered) {
         if (existingIds.has(agent.id)) continue
-        // Agents from other workspaces are top-level peers (no cross-workspace hierarchy)
-        if (agent.reportsTo && !existingIds.has(agent.reportsTo)) {
-          agent.reportsTo = null
+        // Link orphaned agents to the primary root for hierarchy display
+        if (!agent.reportsTo || !existingIds.has(agent.reportsTo)) {
+          agent.reportsTo = primaryRoot?.id ?? null
+          if (primaryRoot) {
+            primaryRoot.directReports.push(agent.id)
+          }
         }
         added.push(agent)
         existingIds.add(agent.id)
@@ -488,7 +494,7 @@ function mergeExtraWorkspaces(
         id,
         name,
         title: 'Agent',
-        reportsTo: null,
+        reportsTo: primaryRoot?.id ?? null,
         directReports: [],
         soulPath: null,
         voiceId: null,
@@ -499,6 +505,9 @@ function mergeExtraWorkspaces(
         memoryPath: null,
         description: `${name} agent.`,
       })
+      if (primaryRoot) {
+        primaryRoot.directReports.push(id)
+      }
       existingIds.add(id)
     }
   }
