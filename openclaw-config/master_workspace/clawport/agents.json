@@ -1,0 +1,696 @@
+[
+  {
+    "id": "master-agent",
+    "name": "Master Agent",
+    "title": "Orchestrator",
+    "reportsTo": null,
+    "directReports": [
+      "juan-s-master-agent"
+    ],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "👑",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "seo-agent",
+    "name": "SEO Agent",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🔍",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "real-estate-agent",
+    "name": "Real Estate Agent",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🏠",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "land-use-attorney",
+    "name": "Land Use Attorney",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🏛️",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "environmental-engineer",
+    "name": "Environmental Engineer",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🌿",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "mckinsey-consultant",
+    "name": "McKinsey Consultant",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "📊",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "investment-banker",
+    "name": "Investment Banker",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🏦",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "insurance-attorney",
+    "name": "Insurance Attorney",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "⚖️",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "route-optimizer-dev",
+    "name": "Route Optimizer Dev",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🛠️",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "software-dev",
+    "name": "Software Dev",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "💻",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "graphic-designer",
+    "name": "Graphic Designer",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🎨",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "video-editor",
+    "name": "Video Editor",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🎬",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "fleet-manager",
+    "name": "Fleet Manager",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🚛",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "cfo",
+    "name": "CFO",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "📈",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "cmo",
+    "name": "CMO",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🎯",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "architect",
+    "name": "Architect",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🏗️",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "coo",
+    "name": "COO",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "⚙️",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "cto",
+    "name": "CTO",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🔧",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "general-counsel",
+    "name": "General Counsel",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "⚖️📋",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "chro",
+    "name": "CHRO",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "👷",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "cso",
+    "name": "CSO",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🦺",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "paid-media-specialist",
+    "name": "Paid Media Specialist",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "📣",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "sales-director",
+    "name": "Sales Director",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "📞",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "accountant",
+    "name": "Accountant",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🧮",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "civil-engineer",
+    "name": "Civil Engineer",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🗺️",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "project-manager",
+    "name": "Project Manager",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "📋",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "ai-data-scientist",
+    "name": "AI / Data Scientist",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🤖",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "procurement-manager",
+    "name": "Procurement Manager",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "📦",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "construction-manager",
+    "name": "Construction Manager",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "👷‍♂️",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "social-media-manager",
+    "name": "Social Media Manager",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "📱",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "insurance-broker",
+    "name": "Insurance Broker",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🛡️",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "customer-service-manager",
+    "name": "Customer Service Manager",
+    "title": "Orchestrator",
+    "reportsTo": "juan-s-master-agent",
+    "directReports": [],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "💬",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  },
+  {
+    "id": "juan-s-master-agent",
+    "name": "Juan's Master Agent",
+    "title": "Orchestrator",
+    "reportsTo": "master-agent",
+    "directReports": [
+      "seo-agent",
+      "real-estate-agent",
+      "land-use-attorney",
+      "environmental-engineer",
+      "mckinsey-consultant",
+      "investment-banker",
+      "insurance-attorney",
+      "route-optimizer-dev",
+      "software-dev",
+      "graphic-designer",
+      "video-editor",
+      "fleet-manager",
+      "cfo",
+      "cmo",
+      "architect",
+      "coo",
+      "cto",
+      "general-counsel",
+      "chro",
+      "cso",
+      "paid-media-specialist",
+      "sales-director",
+      "accountant",
+      "civil-engineer",
+      "project-manager",
+      "ai-data-scientist",
+      "procurement-manager",
+      "construction-manager",
+      "social-media-manager",
+      "insurance-broker",
+      "customer-service-manager"
+    ],
+    "soulPath": "SOUL.md",
+    "voiceId": null,
+    "color": "#f5c518",
+    "emoji": "🦾",
+    "tools": [
+      "read",
+      "write",
+      "exec",
+      "message"
+    ],
+    "model": "anthropic/claude-opus-4-6",
+    "memoryPath": null,
+    "description": "Top-level orchestrator."
+  }
+]
