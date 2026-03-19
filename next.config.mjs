@@ -23,6 +23,25 @@ const nextConfig = {
     root: __dirname,
   },
   allowedDevOrigins: ["local-origin.dev", "*.local-origin.dev", ...getLocalIPs()],
+  async rewrites() {
+    const gateway = "http://127.0.0.1:18789";
+    return [
+      // Proxy /canvas → OpenClaw Canvas UI
+      {
+        source: "/canvas",
+        destination: `${gateway}/__openclaw__/canvas/`,
+      },
+      {
+        source: "/canvas/:path*",
+        destination: `${gateway}/__openclaw__/canvas/:path*`,
+      },
+      // Proxy all __openclaw__ paths (API, WebSocket, assets)
+      {
+        source: "/__openclaw__/:path*",
+        destination: `${gateway}/__openclaw__/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
