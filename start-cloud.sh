@@ -22,4 +22,4 @@ fi
 
 echo ""
 echo "Starting Clawport UI Next.js Dashboard..."
-npx next start -p 3000 -H 0.0.0.0
+npx next start -p 4330 -H 0.0.0.0

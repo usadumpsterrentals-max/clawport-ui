@@ -28,7 +28,7 @@ RUN echo 'WORKSPACE_PATH=/root/.openclaw/master_workspace' > .env.production && 
 RUN npm run build
 
 # Expose both the UI and Gateway ports
-EXPOSE 3000 18789
+EXPOSE 4330 18789
 
 # Start script
 CMD ["sh", "start-cloud.sh"]
