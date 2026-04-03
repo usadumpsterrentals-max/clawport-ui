@@ -150,7 +150,7 @@ The gateway's `/v1/chat/completions` endpoint strips image content, so vision me
 | 200 | `text/event-stream` | SSE stream (both pipelines) |
 | 400 | `application/json` | `{ "error": string }` -- invalid JSON or failed message validation |
 | 404 | `application/json` | `{ "error": "Agent not found" }` |
-| 500 | `application/json` | `{ "error": "Chat failed. Make sure OpenClaw gateway is running." }` |
+| 500 | `application/json` | `{ "error": "Chat failed. Make sure OpenClaw gateway is running." }` or `{ "error": "Local DGX model is reloading after a runtime restart. Try again in a few minutes." }` |
 
 #### Example
 

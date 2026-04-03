@@ -3,9 +3,9 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Map, MessageSquare, Clock, Activity, Brain, Columns3, BookOpen, Settings, DollarSign } from 'lucide-react';
+import { Map, MessageSquare, Clock, Activity, Brain, Columns3, BookOpen, Settings, DollarSign, PhoneCall, Bell } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
-import type { CronJob } from '@/lib/types';
+import type { CronJob, Reminder } from '@/lib/types';
 import { useSettings } from '@/app/settings-provider';
 
 function getInitials(name: string | null): string {
@@ -23,13 +23,15 @@ interface NavItem {
   href: string;
   label: string;
   icon: LucideIcon;
-  badge?: 'agents' | 'unread' | 'errors';
+  badge?: 'agents' | 'unread' | 'errors' | 'reminders';
 }
 
 const NAV_ITEMS: NavItem[] = [
   { href: '/', label: 'Map', icon: Map, badge: 'agents' },
   { href: '/kanban', label: 'Kanban', icon: Columns3 },
   { href: '/chat', label: 'Messages', icon: MessageSquare, badge: 'unread' },
+  { href: '/stephany', label: 'Stephany', icon: PhoneCall },
+  { href: '/reminders', label: 'Reminders', icon: Bell, badge: 'reminders' },
   { href: '/crons', label: 'Crons', icon: Clock, badge: 'errors' },
   { href: '/activity', label: 'Activity', icon: Activity },
   { href: '/costs', label: 'Costs', icon: DollarSign },
@@ -48,6 +50,8 @@ export function NavLinks({ bottomSlot }: { bottomSlot?: React.ReactNode } = {}) 
   const [agentCount, setAgentCount] = useState<number | null>(null);
   const [cronCount, setCronCount] = useState<number | null>(null);
   const [cronErrorCount, setCronErrorCount] = useState<number | null>(null);
+  const [reminderCount, setReminderCount] = useState<number | null>(null);
+  const [reminderDueCount, setReminderDueCount] = useState<number>(0);
 
   // Fetch agent count
   useEffect(() => {
@@ -83,6 +87,35 @@ export function NavLinks({ bottomSlot }: { bottomSlot?: React.ReactNode } = {}) 
       .catch(() => {
         setCronErrorCount(null);
       });
+  }, []);
+
+  // Fetch reminder counts
+  useEffect(() => {
+    function fetchReminders() {
+      fetch('/api/reminders')
+        .then((r) => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        })
+        .then((data: Reminder[]) => {
+          const pending = data.filter(
+            (r) => r.status === 'pending' || r.status === 'snoozed'
+          );
+          const due = data.filter(
+            (r) =>
+              (r.status === 'pending' || r.status === 'snoozed') &&
+              r.dueAt <= Date.now()
+          );
+          setReminderCount(pending.length);
+          setReminderDueCount(due.length);
+        })
+        .catch(() => {
+          setReminderCount(null);
+        });
+    }
+    fetchReminders();
+    const interval = setInterval(fetchReminders, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   // Resolve badge content per nav item
@@ -140,6 +173,48 @@ export function NavLinks({ bottomSlot }: { bottomSlot?: React.ReactNode } = {}) 
                 height: '6px',
                 borderRadius: '50%',
                 background: 'var(--system-red)',
+                flexShrink: 0,
+                animation: 'pulse-red 1.5s ease-in-out infinite',
+              }}
+            />
+          )}
+        </span>
+      );
+    }
+    if (item.badge === 'reminders' && reminderCount !== null) {
+      const hasDue = reminderDueCount > 0;
+      return (
+        <span
+          style={{
+            marginLeft: 'auto',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+          }}
+        >
+          <span
+            className="nav-badge"
+            style={{
+              fontSize: '10px',
+              fontFamily: 'var(--font-mono)',
+              padding: '1px 6px',
+              borderRadius: 'var(--radius-sm)',
+              background: hasDue ? 'rgba(255,149,0,0.1)' : 'var(--fill-quaternary)',
+              color: hasDue ? 'var(--system-orange)' : 'var(--text-tertiary)',
+              lineHeight: '16px',
+              fontWeight: hasDue ? 600 : undefined,
+            }}
+          >
+            {hasDue ? `${reminderDueCount} due` : reminderCount}
+          </span>
+          {hasDue && (
+            <span
+              aria-label={`${reminderDueCount} reminder${reminderDueCount > 1 ? 's' : ''} due`}
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: 'var(--system-orange)',
                 flexShrink: 0,
                 animation: 'pulse-red 1.5s ease-in-out infinite',
               }}

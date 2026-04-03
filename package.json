@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "@dagrejs/dagre": "^2.0.4",
+    "@elevenlabs/react": "^0.15.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

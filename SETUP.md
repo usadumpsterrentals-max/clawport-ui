@@ -183,6 +183,33 @@ ELEVENLABS_API_KEY=sk_your-key-here
 
 If you skip this, everything works normally. Voice indicators just won't appear.
 
+### Stephany Conversational Agent (optional)
+
+ClawPort ships with a built-in `Stephany` route at `/stephany` that targets the deployed public ElevenLabs conversational agent by default. If you want to point that page at a different public agent, add these optional client-side vars:
+
+```env
+NEXT_PUBLIC_ELEVENLABS_STEPHANY_AGENT_ID=agent_4101km8sfn8memhve210pcmpr5sb
+NEXT_PUBLIC_ELEVENLABS_STEPHANY_AGENT_NAME=Stephany
+```
+
+The page prompts for microphone permission when you start a live session and also supports sending text messages or contextual updates while connected.
+
+### Shared Stephany training pack (optional)
+
+The `/stephany` page can also load a shared runtime coaching pack so OpenClaw agents can teach Stephany through normal message workflows. By default ClawPort looks for:
+
+```text
+~/.openclaw/skills/stephany-training/data/RUNTIME_CONTEXT.md
+```
+
+If you want to move that file, set:
+
+```env
+STEPHANY_TRAINING_CONTEXT_PATH=/absolute/path/to/RUNTIME_CONTEXT.md
+```
+
+When present, the page injects that context into each live Stephany session automatically after connect.
+
 ---
 
 ## 3. Enable the HTTP Endpoint

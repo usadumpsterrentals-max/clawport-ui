@@ -1,8 +1,10 @@
-import type { Agent } from './types'
+import type { Agent, Reminder } from './types'
 
 export interface SlashCommand {
   name: string
   description: string
+  hasArgs?: boolean
+  async?: boolean
 }
 
 export const COMMANDS: SlashCommand[] = [
@@ -12,6 +14,8 @@ export const COMMANDS: SlashCommand[] = [
   { name: '/soul', description: "Show agent's SOUL.md persona" },
   { name: '/tools', description: "List agent's available tools" },
   { name: '/crons', description: "Show agent's scheduled jobs" },
+  { name: '/remind', description: 'Set a reminder (e.g. /remind tomorrow 9am Meeting)', hasArgs: true, async: true },
+  { name: '/reminders', description: 'Show upcoming reminders', async: true },
 ]
 
 export interface ParsedCommand {
@@ -117,7 +121,74 @@ export function executeCommand(command: string, agent: Agent): { content: string
       }
     }
 
+    case '/remind':
+    case '/reminders':
+      return { content: 'Loading...' }
+
     default:
       return { content: `Unknown command: ${command}` }
   }
+}
+
+function formatReminderTime(ts: number): string {
+  const d = new Date(ts)
+  const now = new Date()
+  const tomorrow = new Date(now)
+  tomorrow.setDate(tomorrow.getDate() + 1)
+
+  const time = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })
+
+  if (d.toDateString() === now.toDateString()) return `Today ${time}`
+  if (d.toDateString() === tomorrow.toDateString()) return `Tomorrow ${time}`
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ` ${time}`
+}
+
+/** Execute async slash commands that require API calls. */
+export async function executeAsyncCommand(
+  command: string,
+  args: string,
+  agentId: string,
+): Promise<{ content: string } | null> {
+  if (command === '/reminders') {
+    try {
+      const res = await fetch('/api/reminders')
+      if (!res.ok) return { content: 'Failed to fetch reminders.' }
+      const reminders: Reminder[] = await res.json()
+      const pending = reminders.filter(r => r.status === 'pending' || r.status === 'snoozed')
+      if (pending.length === 0) return { content: 'No upcoming reminders.' }
+      return {
+        content: [
+          '**Upcoming Reminders**',
+          '',
+          ...pending.map(r =>
+            `- **${r.title}** -- ${formatReminderTime(r.dueAt)}${r.description ? ` (${r.description})` : ''}`
+          ),
+        ].join('\n'),
+      }
+    } catch {
+      return { content: 'Failed to fetch reminders.' }
+    }
+  }
+
+  if (command === '/remind') {
+    if (!args.trim()) {
+      return { content: 'Usage: `/remind tomorrow 9:30am Meeting with Melissa`' }
+    }
+    try {
+      const res = await fetch('/api/chat/' + agentId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [{ role: 'user', content: `Remind me: ${args}` }],
+          operatorName: 'Operator',
+        }),
+      })
+      if (!res.ok) return { content: 'Failed to create reminder via agent. Try again.' }
+      return { content: `Reminder request sent: "${args}". The agent will confirm once it's scheduled.` }
+    } catch {
+      return { content: 'Failed to create reminder. Check your connection.' }
+    }
+  }
+
+  return null
 }

@@ -7,7 +7,7 @@ import { parseMedia, addMessage, updateLastMessage, deleteOnServer } from '@/lib
 import { buildApiContent } from '@/lib/multimodal'
 import { generateId } from '@/lib/id'
 import { useSettings } from '@/app/settings-provider'
-import { isSlashInput, matchCommands, parseSlashCommand, executeCommand } from '@/lib/slash-commands'
+import { isSlashInput, matchCommands, parseSlashCommand, executeCommand, executeAsyncCommand, COMMANDS } from '@/lib/slash-commands'
 import type { SlashCommand } from '@/lib/slash-commands'
 import { FileAttachment } from './FileAttachment'
 import { MediaPreview } from './MediaPreview'
@@ -419,7 +419,38 @@ export function ConversationView({ agent, conversation, onUpdate, onBack }: Conv
     }
   }, [input, pendingAttachments, isStreaming, agent.id, onUpdate])
 
-  function runSlashCommand(command: string) {
+  function runSlashCommand(command: string, args?: string) {
+    const parsed = parseSlashCommand(command + (args ? ' ' + args : ''))
+    const cmdDef = parsed ? COMMANDS.find(c => c.name === parsed.command) : null
+
+    if (cmdDef?.async) {
+      setInput('')
+      setSlashMatches([])
+      if (textareaRef.current) textareaRef.current.style.height = 'auto'
+
+      const loadingMsg: Message = {
+        id: generateId(),
+        role: 'system',
+        content: 'Processing...',
+        timestamp: Date.now(),
+      }
+      onUpdate(agent.id, prev => addMessage(prev, agent.id, loadingMsg))
+
+      executeAsyncCommand(parsed!.command, parsed!.args, agent.id).then(result => {
+        if (result) {
+          onUpdate(agent.id, prev => {
+            const conv = prev[agent.id]
+            if (!conv) return prev
+            const msgs = conv.messages.map(m =>
+              m.id === loadingMsg.id ? { ...m, content: result.content } : m
+            )
+            return { ...prev, [agent.id]: { ...conv, messages: msgs } }
+          })
+        }
+      })
+      return
+    }
+
     const result = executeCommand(command, agent)
     if (result.action === 'clear') {
       clearChat()
@@ -474,7 +505,7 @@ export function ConversationView({ agent, conversation, onUpdate, onBack }: Conv
       e.preventDefault()
       const parsed = parseSlashCommand(input)
       if (parsed) {
-        runSlashCommand(parsed.command)
+        runSlashCommand(parsed.command, parsed.args)
         return
       }
       sendMessage()

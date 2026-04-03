@@ -269,6 +269,23 @@ export interface MemoryApiResponse {
   health: MemoryHealthSummary
 }
 
+// ── Reminder Types ──────────────────────────────────────────────
+
+export type ReminderStatus = 'pending' | 'fired' | 'dismissed' | 'snoozed'
+
+export interface Reminder {
+  id: string
+  agentId: string
+  title: string
+  description: string | null
+  dueAt: number
+  createdAt: number
+  status: ReminderStatus
+  recurrence: string | null
+  snoozedUntil: number | null
+  deliveryChannel: string | null
+}
+
 // ── Activity Console Types ─────────────────────────────────────
 
 export interface LogEntry {

@@ -6,6 +6,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { DynamicFavicon } from '@/components/DynamicFavicon';
 import { OnboardingWizard } from '@/components/OnboardingWizard';
 import { LiveStreamWidget } from '@/components/LiveStreamWidget';
+import { ReminderProvider } from '@/components/reminders/ReminderProvider';
 
 export const metadata: Metadata = {
   title: 'ClawPort -- Command Centre',
@@ -25,6 +26,7 @@ export default function RootLayout({
             <DynamicFavicon />
             <OnboardingWizard />
             <LiveStreamWidget />
+            <ReminderProvider />
             <div
               className="flex h-screen overflow-hidden"
               style={{ background: 'var(--bg)' }}
