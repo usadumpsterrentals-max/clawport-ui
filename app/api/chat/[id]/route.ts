@@ -67,7 +67,10 @@ export async function POST(
   // Fire-and-forget: extract reminder intent from the latest user message
   const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')
   if (lastUserMsg?.content) {
-    extractAndCreateReminder(lastUserMsg.content, id).catch(() => {})
+    const textContent = typeof lastUserMsg.content === 'string'
+      ? lastUserMsg.content
+      : lastUserMsg.content.filter(p => p.type === 'text').map(p => p.text).join('\n')
+    if (textContent) extractAndCreateReminder(textContent, id).catch(() => {})
   }
 
   // When the LATEST user message contains images, use the OpenClaw gateway's
