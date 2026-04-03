@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest } from 'next/server'
 import { getChatMessages, appendChatMessages, StoredChatMessage } from '@/lib/kanban/chat-store'
 import { apiErrorResponse } from '@/lib/api-error'

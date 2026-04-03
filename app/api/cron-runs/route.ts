@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getCronRuns } from '@/lib/cron-runs'
 import { apiErrorResponse } from '@/lib/api-error'
 import { NextRequest, NextResponse } from 'next/server'

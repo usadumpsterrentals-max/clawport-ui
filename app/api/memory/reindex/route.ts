@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextResponse } from 'next/server'
 import { execSync } from 'child_process'
 import { requireEnv } from '@/lib/env'

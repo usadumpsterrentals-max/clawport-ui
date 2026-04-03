@@ -1,13 +1,19 @@
 export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 import { getAgent } from '@/lib/agents'
+import {
+  buildChatSystemPrompt,
+  chatApiKey,
+  chatBaseUrl,
+  chatModel,
+  dgxChatEnabled,
+  dgxChatMaxTokens,
+  dgxUnavailableMessage,
+  extractChatDeltaText,
+  isDgxTransientError,
+} from '@/lib/dgx-chat'
 import OpenAI from 'openai'
-import { gatewayBaseUrl } from '@/lib/env'
-
-const openai = new OpenAI({
-  baseURL: gatewayBaseUrl(),
-  apiKey: process.env.OPENCLAW_GATEWAY_TOKEN,
-})
 
 const MAX_TITLE = 500
 const MAX_DESC = 5000
@@ -84,14 +90,27 @@ Your role: ${ticket.assigneeRole || 'unassigned'}${workContext}
 Help the user with this ticket. Stay in character as ${agent.name}, ${agent.title}. Be concise — 2-4 sentences unless detail is asked for. No em dashes.`
     : `You are ${agent.name}, ${agent.title}. Respond in character. Be concise. No em dashes.`
 
-  const systemPrompt = agent.soul
+  const baseSystemPrompt = agent.soul
     ? `${agent.soul}\n\n${ticketContext}`
     : ticketContext
+  const systemPrompt = buildChatSystemPrompt(baseSystemPrompt)
 
   try {
+    const openai = new OpenAI({
+      baseURL: chatBaseUrl(),
+      apiKey: chatApiKey(),
+    })
+
     const stream = await openai.chat.completions.create({
-      model: agent.model || 'claude-sonnet-4-6',
+      model: chatModel(agent.model),
       stream: true,
+      ...(dgxChatEnabled()
+        ? {
+            temperature: 0.2,
+            max_tokens: dgxChatMaxTokens(),
+            chat_template_kwargs: { enable_thinking: true },
+          }
+        : {}),
       messages: [
         { role: 'system' as const, content: systemPrompt },
         ...messages.map(m => ({ role: m.role, content: m.content })),
@@ -103,7 +122,7 @@ Help the user with this ticket. Stay in character as ${agent.name}, ${agent.titl
         const encoder = new TextEncoder()
         try {
           for await (const chunk of stream) {
-            const content = chunk.choices[0]?.delta?.content || ''
+            const content = extractChatDeltaText(chunk.choices[0]?.delta || {})
             if (content) {
               controller.enqueue(
                 encoder.encode(`data: ${JSON.stringify({ content })}\n\n`)
@@ -135,8 +154,11 @@ Help the user with this ticket. Stay in character as ${agent.name}, ${agent.titl
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : 'Unknown error'
     console.error(`Kanban chat API error [agentId=${id}]:`, errMsg)
+    const errorMessage = dgxChatEnabled() && isDgxTransientError(err)
+      ? dgxUnavailableMessage()
+      : 'Chat failed. Make sure OpenClaw gateway is running.'
     return new Response(
-      JSON.stringify({ error: 'Chat failed. Make sure OpenClaw gateway is running.' }),
+      JSON.stringify({ error: errorMessage }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     )
   }

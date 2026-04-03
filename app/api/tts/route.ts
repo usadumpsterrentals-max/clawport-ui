@@ -1,12 +1,8 @@
 export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 import OpenAI from 'openai'
 import { gatewayBaseUrl } from '@/lib/env'
-
-const openai = new OpenAI({
-  baseURL: gatewayBaseUrl(),
-  apiKey: process.env.OPENCLAW_GATEWAY_TOKEN,
-})
 
 export async function POST(request: Request) {
   try {
@@ -18,6 +14,11 @@ export async function POST(request: Request) {
         headers: { 'Content-Type': 'application/json' },
       })
     }
+
+    const openai = new OpenAI({
+      baseURL: gatewayBaseUrl(),
+      apiKey: process.env.OPENCLAW_GATEWAY_TOKEN,
+    })
 
     const response = await openai.audio.speech.create({
       model: 'tts-1',

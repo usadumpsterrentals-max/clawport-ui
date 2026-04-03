@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { spawn } from 'child_process'
 import { requireEnv } from '@/lib/env'
 

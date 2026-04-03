@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { getCronRuns } from '@/lib/cron-runs'
 import { computeCostSummary } from '@/lib/costs'
 import { apiErrorResponse } from '@/lib/api-error'

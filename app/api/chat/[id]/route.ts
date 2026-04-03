@@ -1,16 +1,22 @@
 export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
 import { getAgent } from '@/lib/agents'
 import { validateChatMessages } from '@/lib/validation'
 import { hasImageContent, extractImageAttachments, buildTextPrompt, sendViaOpenClaw } from '@/lib/anthropic'
+import {
+  buildChatSystemPrompt,
+  chatApiKey,
+  chatBaseUrl,
+  chatModel,
+  dgxChatEnabled,
+  dgxChatMaxTokens,
+  dgxUnavailableMessage,
+  extractChatDeltaText,
+  isDgxTransientError,
+} from '@/lib/dgx-chat'
+import { extractAndCreateReminder } from '@/lib/reminder-extraction'
 import OpenAI from 'openai'
-import { gatewayBaseUrl } from '@/lib/env'
-
-// Route through the OpenClaw gateway — no separate API key needed
-const openai = new OpenAI({
-  baseURL: gatewayBaseUrl(),
-  apiKey: process.env.OPENCLAW_GATEWAY_TOKEN,
-})
 
 const GATEWAY_TOKEN = process.env.OPENCLAW_GATEWAY_TOKEN || ''
 
@@ -51,14 +57,22 @@ export async function POST(
   const rawBody = body as Record<string, unknown>
   const operatorName = typeof rawBody.operatorName === 'string' ? rawBody.operatorName : 'Operator'
 
-  const systemPrompt = agent.soul
-    ? `${agent.soul}\n\nYou are speaking directly with ${operatorName}, your operator. Stay fully in character. Be concise — this is a live chat. 2-4 sentences unless detail is asked for. No em dashes.`
-    : `You are ${agent.name}, ${agent.title}. Respond in character. Be concise. No em dashes.`
+  const reminderCapability = `\n\nYou can set reminders for ${operatorName}. When they ask you to remind them about something (e.g. "remind me I have a meeting at 9:30 AM tomorrow with Melissa"), acknowledge it naturally and confirm the time. The reminder is automatically saved by the system. Just confirm it conversationally.`
+
+  const baseSystemPrompt = agent.soul
+    ? `${agent.soul}\n\nYou are speaking directly with ${operatorName}, your operator. Stay fully in character. Be concise — this is a live chat. 2-4 sentences unless detail is asked for. No em dashes.${reminderCapability}`
+    : `You are ${agent.name}, ${agent.title}. Respond in character. Be concise. No em dashes.${reminderCapability}`
+  const systemPrompt = buildChatSystemPrompt(baseSystemPrompt)
+
+  // Fire-and-forget: extract reminder intent from the latest user message
+  const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')
+  if (lastUserMsg?.content) {
+    extractAndCreateReminder(lastUserMsg.content, id).catch(() => {})
+  }
 
   // When the LATEST user message contains images, use the OpenClaw gateway's
   // chat.send pipeline. Only check the last message — older messages with images
   // should not force all future messages through this path.
-  const lastUserMsg = [...messages].reverse().find(m => m.role === 'user')
   const latestHasImages = lastUserMsg ? hasImageContent([lastUserMsg]) : false
 
   if (latestHasImages && GATEWAY_TOKEN) {
@@ -92,9 +106,21 @@ export async function POST(
   }
 
   try {
+    const openai = new OpenAI({
+      baseURL: chatBaseUrl(),
+      apiKey: chatApiKey(),
+    })
+
     const stream = await openai.chat.completions.create({
-      model: agent.model || 'claude-sonnet-4-6',
+      model: chatModel(agent.model),
       stream: true,
+      ...(dgxChatEnabled()
+        ? {
+            temperature: 0.2,
+            max_tokens: dgxChatMaxTokens(),
+            chat_template_kwargs: { enable_thinking: true },
+          }
+        : {}),
       messages: [
         { role: 'system' as const, content: systemPrompt },
         ...messages.map(m => ({ role: m.role, content: m.content })),
@@ -106,7 +132,7 @@ export async function POST(
         const encoder = new TextEncoder()
         try {
           for await (const chunk of stream) {
-            const content = chunk.choices[0]?.delta?.content || ''
+            const content = extractChatDeltaText(chunk.choices[0]?.delta || {})
             if (content) {
               controller.enqueue(
                 encoder.encode(`data: ${JSON.stringify({ content })}\n\n`)
@@ -134,6 +160,9 @@ export async function POST(
     console.error('Chat API error:', err)
 
     let userMessage = 'Chat failed. Make sure OpenClaw gateway is running.'
+    if (dgxChatEnabled() && isDgxTransientError(err)) {
+      userMessage = dgxUnavailableMessage()
+    }
     if (err instanceof Error && 'status' in err && (err as { status: number }).status === 405) {
       userMessage = 'Gateway returned 405. Enable the HTTP endpoint: set gateway.http.endpoints.chatCompletions.enabled = true in ~/.openclaw/openclaw.json, then restart the gateway.'
     }

@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { NextRequest } from 'next/server'
 import { getMessages, appendMessages, clearConversation, validateAgentId, StoredMessage } from '@/lib/conversation-store'
 import { apiErrorResponse } from '@/lib/api-error'

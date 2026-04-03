@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { fetchClaudeCodeUsage } from '@/lib/claude-usage'
 
 const POLL_INTERVAL_MS = 60 * 1000 // 60 seconds
