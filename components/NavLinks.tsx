@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Map, MessageSquare, Clock, Activity, Brain, Columns3, BookOpen, Settings, DollarSign, PhoneCall, Bell } from 'lucide-react';
+import { Map, MessageSquare, Clock, Activity, Brain, Columns3, BookOpen, Settings, DollarSign, PhoneCall, Bell, ExternalLink } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import type { CronJob, Reminder } from '@/lib/types';
 import { useSettings } from '@/app/settings-provider';
@@ -24,6 +24,7 @@ interface NavItem {
   label: string;
   icon: LucideIcon;
   badge?: 'agents' | 'unread' | 'errors' | 'reminders';
+  external?: boolean;
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -38,6 +39,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/memory', label: 'Memory', icon: Brain },
   { href: '/docs', label: 'Docs', icon: BookOpen },
   { href: '/settings', label: 'Settings', icon: Settings },
+  { href: 'https://dashboard.wastetologic.com', label: 'OpenClaw Dashboard', icon: ExternalLink, external: true },
 ];
 
 // ---------------------------------------------------------------------------
@@ -248,11 +250,49 @@ export function NavLinks({ bottomSlot }: { bottomSlot?: React.ReactNode } = {}) 
         <div className="flex flex-col gap-0.5">
           {NAV_ITEMS.map((item) => {
             const isActive =
-              item.href === '/'
+              !item.external && (item.href === '/'
                 ? pathname === '/'
-                : pathname.startsWith(item.href);
+                : pathname.startsWith(item.href));
 
             const Icon = item.icon;
+
+            const linkStyle = {
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              minHeight: '36px',
+              padding: '0 10px 0 12px',
+              borderRadius: '8px',
+              fontSize: '13px',
+              fontWeight: isActive ? 600 : 500,
+              color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
+              background: isActive ? 'var(--accent-fill)' : 'transparent',
+              textDecoration: 'none',
+              transition: 'all 100ms var(--ease-smooth)',
+            } as const;
+
+            const iconStyle = {
+              flexShrink: 0,
+              color: isActive ? 'var(--accent)' : 'var(--text-tertiary)',
+              transition: 'color 100ms var(--ease-smooth)',
+            } as const;
+
+            if (item.external) {
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nav-item focus-ring"
+                  aria-label={item.label}
+                  style={linkStyle}
+                >
+                  <Icon size={16} style={iconStyle} />
+                  <span style={{ flex: 1 }}>{item.label}</span>
+                </a>
+              );
+            }
 
             return (
               <Link
@@ -261,29 +301,9 @@ export function NavLinks({ bottomSlot }: { bottomSlot?: React.ReactNode } = {}) 
                 className={`nav-item focus-ring ${isActive ? 'nav-item-active' : ''}`}
                 aria-label={item.label}
                 aria-current={isActive ? 'page' : undefined}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '10px',
-                  minHeight: '36px',
-                  padding: '0 10px 0 12px',
-                  borderRadius: '8px',
-                  fontSize: '13px',
-                  fontWeight: isActive ? 600 : 500,
-                  color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
-                  background: isActive ? 'var(--accent-fill)' : 'transparent',
-                  textDecoration: 'none',
-                  transition: 'all 100ms var(--ease-smooth)',
-                }}
+                style={linkStyle}
               >
-                <Icon
-                  size={16}
-                  style={{
-                    flexShrink: 0,
-                    color: isActive ? 'var(--accent)' : 'var(--text-tertiary)',
-                    transition: 'color 100ms var(--ease-smooth)',
-                  }}
-                />
+                <Icon size={16} style={iconStyle} />
                 <span style={{ flex: 1 }}>{item.label}</span>
                 {getBadge(item)}
               </Link>
