@@ -9,8 +9,8 @@ RUN npm install -g openclaw
 # Set up the working directory for the UI
 WORKDIR /app
 
-# Copy the OpenClaw configuration from openclaw-config into the root container home directory
-COPY ./openclaw-config /root/.openclaw
+# Stage OpenClaw config for seeding into the persistent volume at startup
+COPY ./openclaw-config /opt/openclaw-seed
 
 # Copy the UI package files and install dependencies
 COPY package*.json ./
