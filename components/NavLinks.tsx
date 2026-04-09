@@ -39,7 +39,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/memory', label: 'Memory', icon: Brain },
   { href: '/docs', label: 'Docs', icon: BookOpen },
   { href: '/settings', label: 'Settings', icon: Settings },
-  { href: 'https://dashboard.wastetologic.com', label: 'OpenClaw Dashboard', icon: ExternalLink, external: true },
+  { href: 'https://openclaw.wastetologic.com', label: 'OpenClaw Dashboard', icon: ExternalLink, external: true },
 ];
 
 // ---------------------------------------------------------------------------
