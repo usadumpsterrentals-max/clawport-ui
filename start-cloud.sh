@@ -45,17 +45,19 @@ else
 fi
 
 # -----------------------------------------------------------------------
-# WhatsApp session reset: if the seed has no creds.json, clear the old
-# session from the volume so the gateway generates a fresh QR code.
+# WhatsApp session reset: ONLY triggered by a flag file.
+# To force re-pairing, create /opt/openclaw-seed/.whatsapp-reset in the
+# repo and redeploy. The flag is consumed (deleted) after reset.
+# Normal redeploys preserve the existing WhatsApp session.
 # -----------------------------------------------------------------------
 WA_CREDS="$OPENCLAW_HOME/credentials/whatsapp/default/creds.json"
-WA_SEED_CREDS="$SEED_DIR/credentials/whatsapp/default/creds.json"
-if [ ! -f "$WA_SEED_CREDS" ] && [ -f "$WA_CREDS" ]; then
+RESET_FLAG="$SEED_DIR/.whatsapp-reset"
+if [ -f "$RESET_FLAG" ] && [ -f "$WA_CREDS" ]; then
   echo "=== WhatsApp Reset ==="
-  echo "No WhatsApp credentials in image seed -- clearing old session for new QR pairing..."
+  echo "Reset flag detected -- clearing WhatsApp session for new QR pairing..."
   rm -rf "$OPENCLAW_HOME/credentials/whatsapp/default"
   mkdir -p "$OPENCLAW_HOME/credentials/whatsapp/default"
-  echo "Old WhatsApp session cleared. A new QR code will be generated on gateway startup."
+  echo "Old WhatsApp session cleared."
 fi
 
 echo ""
@@ -70,14 +72,7 @@ echo "Starting OpenClaw Gateway Engine in the background..."
 openclaw gateway > /tmp/openclaw-gateway.log 2>&1 &
 GATEWAY_PID=$!
 
-# Wait longer on first WhatsApp pairing so the QR code has time to appear
-if [ ! -f "$WA_CREDS" ]; then
-  echo "Waiting for WhatsApp QR code (check container logs in Coolify)..."
-  sleep 15
-else
-  sleep 5
-fi
-
+sleep 5
 if kill -0 $GATEWAY_PID 2>/dev/null; then
   echo "Gateway started successfully (PID $GATEWAY_PID)"
   echo "=== Gateway Startup Log ==="
@@ -86,6 +81,18 @@ if kill -0 $GATEWAY_PID 2>/dev/null; then
 else
   echo "WARNING: Gateway crashed on startup! Logs:"
   cat /tmp/openclaw-gateway.log
+fi
+
+# Print WhatsApp pairing status
+if [ -f "$WA_CREDS" ]; then
+  echo ""
+  echo "=== WhatsApp: Already paired (session exists) ==="
+else
+  echo ""
+  echo "=== WhatsApp: NOT paired ==="
+  echo "To pair, run inside the container:"
+  echo "  docker exec -it <container_id> openclaw channels login --channel whatsapp"
+  echo "Then scan the QR code with your phone."
 fi
 
 echo ""
