@@ -44,6 +44,20 @@ else
   echo "Config refresh complete."
 fi
 
+# -----------------------------------------------------------------------
+# WhatsApp session reset: if the seed has no creds.json, clear the old
+# session from the volume so the gateway generates a fresh QR code.
+# -----------------------------------------------------------------------
+WA_CREDS="$OPENCLAW_HOME/credentials/whatsapp/default/creds.json"
+WA_SEED_CREDS="$SEED_DIR/credentials/whatsapp/default/creds.json"
+if [ ! -f "$WA_SEED_CREDS" ] && [ -f "$WA_CREDS" ]; then
+  echo "=== WhatsApp Reset ==="
+  echo "No WhatsApp credentials in image seed -- clearing old session for new QR pairing..."
+  rm -rf "$OPENCLAW_HOME/credentials/whatsapp/default"
+  mkdir -p "$OPENCLAW_HOME/credentials/whatsapp/default"
+  echo "Old WhatsApp session cleared. A new QR code will be generated on gateway startup."
+fi
+
 echo ""
 
 # Log environment check
@@ -56,11 +70,19 @@ echo "Starting OpenClaw Gateway Engine in the background..."
 openclaw gateway > /tmp/openclaw-gateway.log 2>&1 &
 GATEWAY_PID=$!
 
-# Wait a few seconds and check if it's still alive
-sleep 5
+# Wait longer on first WhatsApp pairing so the QR code has time to appear
+if [ ! -f "$WA_CREDS" ]; then
+  echo "Waiting for WhatsApp QR code (check container logs in Coolify)..."
+  sleep 15
+else
+  sleep 5
+fi
+
 if kill -0 $GATEWAY_PID 2>/dev/null; then
   echo "Gateway started successfully (PID $GATEWAY_PID)"
-  tail -5 /tmp/openclaw-gateway.log
+  echo "=== Gateway Startup Log ==="
+  cat /tmp/openclaw-gateway.log
+  echo "=== End Gateway Log ==="
 else
   echo "WARNING: Gateway crashed on startup! Logs:"
   cat /tmp/openclaw-gateway.log
