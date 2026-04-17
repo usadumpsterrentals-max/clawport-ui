@@ -24,7 +24,8 @@ const nextConfig = {
   },
   allowedDevOrigins: ["local-origin.dev", "*.local-origin.dev", ...getLocalIPs()],
   async rewrites() {
-    const gateway = "http://127.0.0.1:18789";
+    const port = process.env.OPENCLAW_GATEWAY_PORT || "18789";
+    const gateway = `http://127.0.0.1:${port}`;
     return [
       // Proxy /canvas → OpenClaw Canvas UI
       {

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { requireEnv } from '@/lib/env'
+import { gatewayBaseUrl, gatewayPort, requireEnv } from '@/lib/env'
 
 describe('requireEnv', () => {
   beforeEach(() => {
@@ -40,5 +40,34 @@ describe('requireEnv', () => {
     expect(() => requireEnv('ANOTHER_VAR')).toThrow(
       'Missing required environment variable: ANOTHER_VAR'
     )
+  })
+})
+
+describe('gatewayBaseUrl', () => {
+  beforeEach(() => {
+    vi.unstubAllEnvs()
+    delete process.env.OPENCLAW_GATEWAY_PORT
+    delete process.env.OPENCLAW_GATEWAY_BASE_URL
+  })
+
+  afterEach(() => {
+    vi.unstubAllEnvs()
+  })
+
+  it('defaults to 127.0.0.1:18789/v1', () => {
+    expect(gatewayPort()).toBe(18789)
+    expect(gatewayBaseUrl()).toBe('http://127.0.0.1:18789/v1')
+  })
+
+  it('respects OPENCLAW_GATEWAY_PORT', () => {
+    vi.stubEnv('OPENCLAW_GATEWAY_PORT', '19999')
+    expect(gatewayBaseUrl()).toBe('http://127.0.0.1:19999/v1')
+  })
+
+  it('respects OPENCLAW_GATEWAY_BASE_URL with or without /v1', () => {
+    vi.stubEnv('OPENCLAW_GATEWAY_BASE_URL', 'http://10.0.0.5:18789')
+    expect(gatewayBaseUrl()).toBe('http://10.0.0.5:18789/v1')
+    vi.stubEnv('OPENCLAW_GATEWAY_BASE_URL', 'http://10.0.0.5:18789/v1')
+    expect(gatewayBaseUrl()).toBe('http://10.0.0.5:18789/v1')
   })
 })

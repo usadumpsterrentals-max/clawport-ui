@@ -62,6 +62,29 @@ fi
 
 echo ""
 
+# -----------------------------------------------------------------------
+# Gateway token for Next.js API routes (chat, TTS, transcribe).
+# Coolify can set OPENCLAW_GATEWAY_TOKEN; if missing, read from seeded openclaw.json
+# so production never runs with an empty Bearer token.
+# -----------------------------------------------------------------------
+if [ -z "${OPENCLAW_GATEWAY_TOKEN:-}" ] && [ -f "$OPENCLAW_HOME/openclaw.json" ]; then
+  OPENCLAW_GATEWAY_TOKEN="$(node -e "
+    try {
+      const c = JSON.parse(require('fs').readFileSync('$OPENCLAW_HOME/openclaw.json', 'utf8'));
+      const t = c.gateway && c.gateway.auth && c.gateway.auth.token;
+      process.stdout.write(t ? String(t) : '');
+    } catch (e) { process.stdout.write(''); }
+  ")"
+  export OPENCLAW_GATEWAY_TOKEN
+  if [ -n "$OPENCLAW_GATEWAY_TOKEN" ]; then
+    echo "=== OPENCLAW_GATEWAY_TOKEN set from openclaw.json (override with Coolify env if needed) ==="
+  else
+    echo "=== WARNING: No gateway token in openclaw.json — set OPENCLAW_GATEWAY_TOKEN in Coolify ==="
+  fi
+else
+  echo "=== OPENCLAW_GATEWAY_TOKEN from environment ($( [ -n "${OPENCLAW_GATEWAY_TOKEN:-}" ] && echo 'set' || echo 'MISSING' )) ==="
+fi
+
 # Log environment check
 echo "=== Environment Check ==="
 echo "ANTHROPIC_API_KEY set: $([ -n "$ANTHROPIC_API_KEY" ] && echo 'YES' || echo 'NO')"
@@ -72,7 +95,52 @@ echo "Starting OpenClaw Gateway Engine in the background..."
 openclaw gateway > /tmp/openclaw-gateway.log 2>&1 &
 GATEWAY_PID=$!
 
-sleep 20
+# Wait until gateway accepts HTTP so Next.js rewrites (/canvas, /__openclaw__) do not return 502.
+GW_PORT="${OPENCLAW_GATEWAY_PORT:-18789}"
+export GW_WAIT_PORT="$GW_PORT"
+export GW_WAIT_TOKEN="${OPENCLAW_GATEWAY_TOKEN:-}"
+echo "=== Waiting for gateway HTTP on 127.0.0.1:${GW_PORT} (up to 90s) ==="
+node <<'WAIT_GATEWAY'
+const http = require('http');
+const port = parseInt(process.env.GW_WAIT_PORT || '18789', 10);
+const token = process.env.GW_WAIT_TOKEN || '';
+const maxAttempts = 90;
+function probe() {
+  return new Promise((resolve) => {
+    const opts = {
+      hostname: '127.0.0.1',
+      port,
+      path: '/v1/models',
+      method: 'GET',
+      timeout: 4000,
+    };
+    if (token) opts.headers = { Authorization: 'Bearer ' + token };
+    const req = http.request(opts, (res) => {
+      res.resume();
+      resolve(res.statusCode !== undefined && res.statusCode < 500);
+    });
+    req.on('error', () => resolve(false));
+    req.on('timeout', () => {
+      req.destroy();
+      resolve(false);
+    });
+    req.end();
+  });
+}
+(async () => {
+  for (let i = 0; i < maxAttempts; i++) {
+    if (await probe()) {
+      console.log('=== Gateway HTTP ready after ~' + (i + 1) + 's ===');
+      process.exit(0);
+    }
+    await new Promise((r) => setTimeout(r, 1000));
+  }
+  console.error('=== WARNING: Gateway HTTP not ready after 90s — UI will start; check /tmp/openclaw-gateway.log ===');
+  process.exit(0);
+})();
+WAIT_GATEWAY
+
+sleep 5
 if kill -0 $GATEWAY_PID 2>/dev/null; then
   echo "Gateway started successfully (PID $GATEWAY_PID)"
   echo "=== Gateway Startup Log ==="
